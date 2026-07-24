@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function DesignPage() {
   const [status, setStatus] = useState("idle"); // idle, capturing, discovering, generating, complete
@@ -101,9 +103,44 @@ export default function DesignPage() {
                 {status === 'complete' && (
                   <div className="bg-white p-10 rounded-[2rem] shadow-2xl border-l-[12px] border-green-500 animate-in fade-in slide-in-from-right-10">
                     <h2 className="text-2xl font-black text-slate-900 mb-2 underline decoration-green-500 decoration-4 underline-offset-8">Optimization Report</h2>
-                    <p className="text-slate-600 text-lg mb-8 mt-4 leading-relaxed">
-                      <span className="whitespace-pre-wrap">{report}</span>
-                    </p>
+                    <div className="text-slate-600 text-lg mb-8 mt-4 leading-relaxed">
+                      {/* <span className="whitespace-pre-wrap">{report}</span> */}
+                      <div className="text-slate-800 leading-relaxed space-y-4">
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            table: ({ children }) => (
+                              <table className="w-full border-collapse border border-slate-300 my-4 text-sm">
+                                {children}
+                              </table>
+                            ),
+                            th: ({ children }) => (
+                              <th className="border border-slate-300 bg-slate-100 px-3 py-2 text-left font-bold">
+                                {children}
+                              </th>
+                            ),
+                            td: ({ children }) => (
+                              <td className="border border-slate-300 px-3 py-2 align-top">
+                                {children}
+                              </td>
+                            ),
+                            h1: ({ children }) => <h1 className="text-2xl font-black mt-6 mb-3">{children}</h1>,
+                            h2: ({ children }) => <h2 className="text-xl font-bold mt-5 mb-2">{children}</h2>,
+                            h3: ({ children }) => <h3 className="text-lg font-bold mt-4 mb-2">{children}</h3>,
+                            code: ({ children }) => (
+                              <pre className="bg-slate-900 text-slate-200 p-4 rounded-lg overflow-x-auto text-xs my-3">
+                                <code>{children}</code>
+                              </pre>
+                            ),
+                            p: ({ children }) => <p className="mb-2">{children}</p>,
+                            ul: ({ children }) => <ul className="list-disc pl-6 mb-2">{children}</ul>,
+                            li: ({ children }) => <li className="mb-1">{children}</li>,
+                          }}
+                        >
+                          {report}
+                        </ReactMarkdown>
+                      </div>
+                    </div>
                     <div className="flex gap-4">
                       <button onClick={() => setStatus('idle')} className="flex-1 bg-green-600 text-white py-4 rounded-xl font-black hover:bg-green-700 transition">APPROVE & SAVE</button>
                       <button onClick={() => setStatus('idle')} className="flex-1 border-2 border-red-500 text-red-500 py-4 rounded-xl font-black hover:bg-red-50 transition">REJECT</button>
