@@ -1,0 +1,128 @@
+{
+  "workflow_name": "Digital Loan Release Coordination",
+  "purpose": "Coordinate requirements, development, integration, and testing to release digital loan features.",
+  "actors": ["Sarah", "Daniel", "Marcus", "Priya"],
+  "last_updated": "2026-07-24",
+  "generated_on": "2026-07-24T00:00:00Z",
+  "workflow_exists": true,
+  "matched_workflow": "Digital Loan Release Coordination",
+  "similarity_score": 100,
+  "action": "update",
+  "reason": "An identical workflow already exists; refresh stored record with latest statuses.",
+  "status_summary": {
+    "overall_status": "In-progress",
+    "key_blockers": [
+      "Customer ID format mismatch (integration) - expected spec 2026-07-25",
+      "Email notification defect - targeted fix by 2026-07-26",
+      "Compliance documentation sign-off pending"
+    ],
+    "highlights": [
+      "Eligibility check complete",
+      "Document upload working",
+      "PDF validation fixed 2026-07-23",
+      "Test servers patched"
+    ]
+  },
+  "issues": [
+    {
+      "id": "A",
+      "title": "Customer ID format mismatch",
+      "severity": "High",
+      "discovered": "2026-07-24",
+      "owner": "Daniel/Marcus",
+      "status": "Waiting for updated API spec (expected 2026-07-25)",
+      "impact": "Blocks integration testing and E2E flows"
+    },
+    {
+      "id": "B",
+      "title": "PDF validation defect",
+      "severity": "Medium",
+      "discovered": "2026-07-24",
+      "owner": "Daniel",
+      "status": "Fixed 2026-07-23; validation pending",
+      "impact": "Document upload flow"
+    },
+    {
+      "id": "C",
+      "title": "Email notification defect",
+      "severity": "Medium",
+      "discovered": "2026-07-24",
+      "owner": "Daniel",
+      "status": "Investigating; fixes targeted by 2026-07-26",
+      "impact": "Customer communication and UX"
+    },
+    {
+      "id": "D",
+      "title": "Incorrect error messages for empty mandatory fields",
+      "severity": "Medium",
+      "discovered": "2026-07-24",
+      "owner": "Daniel/Sarah",
+      "status": "Fix pending; target 2026-07-26",
+      "impact": "UX clarity, support volume"
+    },
+    {
+      "id": "E",
+      "title": "Compliance documentation incomplete",
+      "severity": "Critical for release",
+      "discovered": "2026-07-24",
+      "owner": "Sarah",
+      "status": "In progress; target sign-off 2026-07-26",
+      "impact": "May block production release"
+    }
+  ],
+  "recommended_actions": [
+    {
+      "action": "Confirm API spec and obtain sample payloads",
+      "owner": "Marcus",
+      "due": "2026-07-25"
+    },
+    {
+      "action": "Implement adapter/normalizer for customer ID if required",
+      "owner": "Daniel",
+      "due": "2026-07-26"
+    },
+    {
+      "action": "Validate PDF fix in latest build",
+      "owner": "Priya",
+      "due": "2026-07-25"
+    },
+    {
+      "action": "Fix and validate email notifications",
+      "owner": "Daniel/Priya",
+      "due": "2026-07-26"
+    },
+    {
+      "action": "Standardize error messages and validate",
+      "owner": "Daniel/Sarah/Priya",
+      "due": "2026-07-26"
+    },
+    {
+      "action": "Finalize compliance docs and get sign-off",
+      "owner": "Sarah/Legal",
+      "due": "2026-07-26"
+    },
+    {
+      "action": "Full regression and E2E test run",
+      "owner": "Priya",
+      "due": "2026-07-27"
+    },
+    {
+      "action": "Go/No-Go meeting",
+      "owner": "Sarah",
+      "due": "2026-07-28"
+    }
+  ],
+  "release_gate_criteria": [
+    "No unresolved high-severity defects",
+    "Integration contract & E2E tests passed",
+    "Compliance sign-off obtained",
+    "Security passes on staging",
+    "Stakeholder sign-offs collected"
+  ],
+  "next_steps": [
+    "Confirm API spec (Marcus)",
+    "Prioritize integration adapter (Daniel)",
+    "Re-run regression after fixes (Priya)",
+    "Obtain compliance sign-off (Sarah)"
+  ]
+}
