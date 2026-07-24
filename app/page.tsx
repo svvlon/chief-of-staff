@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -8,6 +8,7 @@ export default function DesignPage() {
   const [status, setStatus] = useState("idle"); // idle, capturing, discovering, generating, complete
   const [userInput, setUserInput] = useState("");
   const [report, setReport] = useState("");
+  // const [file, setFile] = useState<File | null>(null);
 
   // const startDemo = () => {
   //   if (!userInput) {
@@ -19,7 +20,9 @@ export default function DesignPage() {
   //   setTimeout(() => setStatus("generating"), 4000);
   //   setTimeout(() => setStatus("complete"), 6000);
   // };
+
   const startDemo = async () => {
+    // if (!userInput && !file) {
     if (!userInput) {
       alert("Please enter a workflow description first!");
       return;
@@ -44,6 +47,57 @@ export default function DesignPage() {
       setStatus("idle");
     }
   };
+  // const startDemo = async () => {
+  //   if (!userInput && !file) {
+  //     alert("Please enter a workflow description or upload a file!");
+  //     return;
+  //   }
+  //   setStatus("capturing");
+  //   try {
+  //     let res;
+  //     if (file) {
+  //       const formData = new FormData();
+  //       formData.append("file", file);
+  //       res = await fetch("/api/process", { method: "POST", body: formData });
+  //     } else {
+  //       res = await fetch("/api/process", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ transcript: userInput }),
+  //       });
+  //     }
+  //     const data = await res.json();
+  //     if (data.error) {
+  //       alert("Error: " + data.error);
+  //       setStatus("idle");
+  //       return;
+  //     }
+  //     setReport(data.report);
+  //     setStatus("complete");
+  //   } catch (err) {
+  //     alert("Request failed: " + err);
+  //     setStatus("idle");
+  //   }
+  // };
+
+  const handleApprove = async () => {
+    // (your existing insert-to-db logic, if any client-side — likely already done server-side in /api/process)
+    const res = await fetch("/api/download-docx", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ report }),
+    });
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `optimization-report-${Date.now()}.docx`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setStatus("idle");
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900">
@@ -60,10 +114,11 @@ export default function DesignPage() {
         <div className="w-72 bg-[#0f172a] text-white p-8 flex flex-col gap-10 shadow-2xl">
           <h2 className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Execution Pipeline</h2>
           <div className="space-y-8">
-            <PipelineStep number="01" label="Capture Agent" active={status === 'capturing'} done={['discovering', 'generating', 'complete'].includes(status)} />
-            <PipelineStep number="02" label="Discovery Agent" active={status === 'discovering'} done={['generating', 'complete'].includes(status)} />
-            <PipelineStep number="03" label="Report Agent" active={status === 'generating'} done={status === 'complete'} />
-            <PipelineStep number="04" label="Human Approval" active={status === 'complete'} done={false} />
+            <PipelineStep number="01" label="Workflow Capture Agent" active={status === 'capturing'} done={['discovering', 'generating', 'complete'].includes(status)} />
+            <PipelineStep number="02" label="Workflow Discovery Agent" active={status === 'discovering'} done={['generating', 'complete'].includes(status)} />
+            <PipelineStep number="03" label="Knowledge Management Agent" active={status === 'comparing'} done={['generating', 'complete'].includes(status)} />
+            <PipelineStep number="04" label="Report Generation Agent" active={status === 'generating'} done={status === 'complete'} />
+            <PipelineStep number="05" label="Human Approval" active={status === 'complete'} done={false} />
           </div>
         </div>
 
@@ -79,6 +134,12 @@ export default function DesignPage() {
                   placeholder="e.g. Describe your current onboarding process..."
                   className="w-full h-40 p-6 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all text-lg mb-6"
                 />
+                {/* <input
+                  type="file"
+                  accept=".docx,.txt"
+                  onChange={(e) => setFile(e.target.files?.[0] || null)}
+                  className="mb-4 block w-full text-sm"
+                /> */}
                 <button 
                   onClick={startDemo}
                   className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-blue-700 hover:shadow-2xl active:scale-95 transition-all"
@@ -142,7 +203,7 @@ export default function DesignPage() {
                       </div>
                     </div>
                     <div className="flex gap-4">
-                      <button onClick={() => setStatus('idle')} className="flex-1 bg-green-600 text-white py-4 rounded-xl font-black hover:bg-green-700 transition">APPROVE & SAVE</button>
+                      <button onClick={handleApprove} className="flex-1 bg-green-600 text-white py-4 rounded-xl font-black hover:bg-green-700 transition">APPROVE & SAVE</button>
                       <button onClick={() => setStatus('idle')} className="flex-1 border-2 border-red-500 text-red-500 py-4 rounded-xl font-black hover:bg-red-50 transition">REJECT</button>
                     </div>
                   </div>
