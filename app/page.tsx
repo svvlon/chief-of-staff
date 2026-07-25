@@ -3,6 +3,8 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import Image from "next/image";
+import Logo from '../public/logo.png'
 
 export default function DesignPage() {
   const [status, setStatus] = useState("idle"); // idle, capturing, discovering, generating, complete
@@ -103,7 +105,10 @@ export default function DesignPage() {
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900">
       {/* Header */}
       <header className="bg-white border-b p-6 shadow-sm flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-700">Chief of Staff (CoS)</h1>
+        <div className="flex items-center gap-3">
+          <Image src={Logo} alt="Chief of Staff logo" className="h-10 w-10 object-contain" />
+          <h1 className="text-2xl font-bold text-blue-700">Chief of Staff (CoS)</h1>
+        </div>
         <div className={`px-4 py-1 rounded-full text-xs font-black border-2 ${status === 'complete' ? 'bg-green-100 border-green-500 text-green-700' : 'bg-blue-100 border-blue-500 text-blue-700'}`}>
           STATUS: {status.toUpperCase()}
         </div>
