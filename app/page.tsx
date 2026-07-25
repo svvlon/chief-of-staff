@@ -103,7 +103,7 @@ export default function DesignPage() {
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900">
       {/* Header */}
       <header className="bg-white border-b p-6 shadow-sm flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-700">Workflow Optimizer <span className="text-slate-400 font-light">| Agent Interface</span></h1>
+        <h1 className="text-2xl font-bold text-blue-700">Chief of Staff (CoS)</h1>
         <div className={`px-4 py-1 rounded-full text-xs font-black border-2 ${status === 'complete' ? 'bg-green-100 border-green-500 text-green-700' : 'bg-blue-100 border-blue-500 text-blue-700'}`}>
           STATUS: {status.toUpperCase()}
         </div>
